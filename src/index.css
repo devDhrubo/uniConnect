@@ -1,10 +1,10 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap");
 
 @import "tailwindcss";
 @plugin "daisyui";
 
 .font-inter {
-  font-family: 'Inter', sans-serif;
+  font-family: "Inter", sans-serif;
 }
 
 /* Color Variables */
@@ -14,17 +14,17 @@ Emerald Green	Hope, health, donation success	#388E3C
 Amber Yellow	Festive, attention-grabbing (events, notices)	#FFC107
 Cool Gray	Neutral backgrounds, cards, modals	#F5F5F5 / #9E9E9E */
 
-.main-col{
-  color: #3F51B5;
+.main-col {
+  color: #3f51b5;
 }
 .blood-highlight {
-  color: #D32F2F;
+  color: #d32f2f;
 }
-.donation-highlight{
-  color: #388E3C;
+.donation-highlight {
+  color: #388e3c;
 }
 .attention-grabbing {
-  color: #FFC107;
+  color: #ffc107;
 }
 
 /* Custom Utilities */
@@ -76,11 +76,12 @@ html {
 
 /* Loading animation */
 @keyframes pulse {
-  0%, 100% {
+  0%,
+  100% {
     opacity: 1;
   }
   50% {
-    opacity: .5;
+    opacity: 0.5;
   }
 }
 
@@ -93,7 +94,7 @@ html {
 .input:focus-visible,
 .textarea:focus-visible,
 .select:focus-visible {
-  outline: 2px solid #3F51B5;
+  outline: 2px solid #3f51b5;
   outline-offset: 2px;
 }
 

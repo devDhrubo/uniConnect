@@ -2,17 +2,22 @@ import { Link } from "react-router-dom";
 
 const Navbar = () => {
   return (
-    <div className="container mx-auto">
-      <div className="navbar bg-base-100 shadow-sm">
+    <div className="container mx-auto mt-5">
+      <div className="navbar bg-[#F9FAFB]">
         <div className="flex-1">
-          <Link to="/" className="text-xl font-bold main-col">uniConnect</Link>
+          <Link to="/" className="text-xl font-bold main-col">
+            uniConnect
+          </Link>
         </div>
-        
+
         {/* Desktop Navigation */}
         <div className="hidden lg:flex">
           <ul className="menu menu-horizontal px-1 gap-2">
             <li>
-              <Link to="/blood-donation" className="text-red-600 hover:bg-red-50">
+              <Link
+                to="/blood-donation"
+                className="text-red-600 hover:bg-red-50"
+              >
                 🩸 Blood Bank
               </Link>
             </li>
@@ -36,6 +41,11 @@ const Navbar = () => {
                 📢 Bulletin
               </Link>
             </li>
+            <li>
+              <Link to="/about" className="hover:bg-gray-50">
+                ℹ️ About
+              </Link>
+            </li>
           </ul>
         </div>
 
@@ -43,18 +53,48 @@ const Navbar = () => {
           {/* Mobile Menu */}
           <div className="dropdown dropdown-end lg:hidden">
             <div tabIndex={0} role="button" className="btn btn-ghost lg:hidden">
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h8m-8 6h16"></path>
+              <svg
+                className="w-5 h-5"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  d="M4 6h16M4 12h8m-8 6h16"
+                ></path>
               </svg>
             </div>
-            <ul tabIndex={0} className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52">
-              <li><Link to="/blood-donation">🩸 Blood Donation</Link></li>
-              <li><Link to="/lost-found">🔍 Lost & Found</Link></li>
-              <li><Link to="/flood-relief">🌊 Flood Relief</Link></li>
-              <li><Link to="/medical-aid">🏥 Medical Aid</Link></li>
-              <li><Link to="/events">🎉 Events</Link></li>
-              <li><Link to="/auction">🛒 Marketplace</Link></li>
-              <li><Link to="/bulletin">📢 Bulletin</Link></li>
+            <ul
+              tabIndex={0}
+              className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52"
+            >
+              <li>
+                <Link to="/blood-donation">🩸 Blood Donation</Link>
+              </li>
+              <li>
+                <Link to="/lost-found">🔍 Lost & Found</Link>
+              </li>
+              <li>
+                <Link to="/flood-relief">🌊 Flood Relief</Link>
+              </li>
+              <li>
+                <Link to="/medical-aid">🏥 Medical Aid</Link>
+              </li>
+              <li>
+                <Link to="/events">🎉 Events</Link>
+              </li>
+              <li>
+                <Link to="/auction">🛒 Marketplace</Link>
+              </li>
+              <li>
+                <Link to="/bulletin">📢 Bulletin</Link>
+              </li>
+              <li>
+                <Link to="/about">ℹ️ About</Link>
+              </li>
             </ul>
           </div>
 
@@ -82,10 +122,18 @@ const Navbar = () => {
                   <span className="badge">New</span>
                 </Link>
               </li>
-              <li><Link to="/my-donations">My Donations</Link></li>
-              <li><Link to="/my-listings">My Listings</Link></li>
-              <li><Link to="/settings">Settings</Link></li>
-              <li><a>Logout</a></li>
+              <li>
+                <Link to="/my-donations">My Donations</Link>
+              </li>
+              <li>
+                <Link to="/my-listings">My Listings</Link>
+              </li>
+              <li>
+                <Link to="/settings">Settings</Link>
+              </li>
+              <li>
+                <a>Logout</a>
+              </li>
             </ul>
           </div>
         </div>

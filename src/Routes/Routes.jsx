@@ -1,13 +1,14 @@
 import { createBrowserRouter } from "react-router-dom";
-import Home from "../Pages/Home";
 import Main from "../Layout/Main";
-import BloodDonation from "../Pages/BloodDonation";
-import LostFound from "../Pages/LostFound";
-import FloodRelief from "../Pages/FloodRelief";
-import MedicalAid from "../Pages/MedicalAid";
-import Events from "../Pages/Events";
+import About from "../Pages/About";
 import Auction from "../Pages/Auction";
+import BloodDonation from "../Pages/BloodDonation";
 import Bulletin from "../Pages/Bulletin";
+import Events from "../Pages/Events";
+import FloodRelief from "../Pages/FloodRelief";
+import Home from "../Pages/Home";
+import LostFound from "../Pages/LostFound";
+import MedicalAid from "../Pages/MedicalAid";
 
 export const router = createBrowserRouter([
   {
@@ -50,6 +51,10 @@ export const router = createBrowserRouter([
         {
             path: "/bulletin",
             element: <Bulletin/>
+        },
+        {
+            path: "/about",
+            element: <About/>
         }
     ]
   },

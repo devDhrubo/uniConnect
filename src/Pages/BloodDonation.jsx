@@ -1,8 +1,18 @@
-import React, { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { bloodApi, handleApiError, showNotification } from "../api/client";
 
 const BloodDonation = () => {
   const [activeTab, setActiveTab] = useState("donate");
+  const [loading, setLoading] = useState(false);
+  const [donors, setDonors] = useState([]);
+  const [donationRequests, setDonationRequests] = useState([]);
+  const [stats, setStats] = useState({
+    totalDonors: 0,
+    availableDonors: 0,
+    activeRequests: 0,
+    urgentRequests: 0
+  });
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -10,76 +20,122 @@ const BloodDonation = () => {
     bloodGroup: "",
     lastDonation: "",
     medicalConditions: "",
-    urgency: "normal"
+    location: ""
   });
 
   const bloodGroups = ["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"];
 
-  const donationRequests = [
-    {
-      id: 1,
-      patientName: "John Doe",
-      bloodGroup: "O-",
-      unitsNeeded: 2,
-      urgency: "critical",
-      hospital: "City General Hospital",
-      contact: "+1234567890",
-      timePosted: "2 hours ago",
-      location: "Campus Area"
-    },
-    {
-      id: 2,
-      patientName: "Jane Smith",
-      bloodGroup: "A+",
-      unitsNeeded: 1,
-      urgency: "urgent",
-      hospital: "University Medical Center",
-      contact: "+1234567891",
-      timePosted: "4 hours ago",
-      location: "Near Library"
-    },
-    {
-      id: 3,
-      patientName: "Mike Johnson",
-      bloodGroup: "B+",
-      unitsNeeded: 3,
-      urgency: "normal",
-      hospital: "Community Health Center",
-      contact: "+1234567892",
-      timePosted: "1 day ago",
-      location: "Downtown"
-    }
-  ];
+  // Load data when component mounts
+  useEffect(() => {
+    loadStats();
+    loadDonors();
+    loadBloodRequests();
+  }, []);
 
-  const donors = [
-    {
-      id: 1,
-      name: "Sarah Wilson",
-      bloodGroup: "O-",
-      lastDonation: "2 months ago",
-      totalDonations: 12,
-      status: "available",
-      badges: ["Super Donor", "Life Saver"]
-    },
-    {
-      id: 2,
-      name: "David Chen",
-      bloodGroup: "A+",
-      lastDonation: "1 month ago",
-      totalDonations: 8,
-      status: "available",
-      badges: ["Regular Donor"]
-    },
-    {
-      id: 3,
-      name: "Emily Brown",
-      bloodGroup: "B-",
-      lastDonation: "3 weeks ago",
-      totalDonations: 15,
-      status: "not_available",
-      badges: ["Champion Donor", "Life Saver"]
+  const loadStats = async () => {
+    try {
+      const response = await bloodApi.getStats();
+      setStats({
+        totalDonors: response.data.totalDonors || 156,
+        availableDonors: response.data.availableDonors || 89,
+        activeRequests: response.data.activeRequests || 12,
+        urgentRequests: response.data.urgentRequests || 3
+      });
+    } catch (error) {
+      console.error('Failed to load stats:', error);
+      // Use default values if API fails
     }
-  ];
+  };
+
+  const loadDonors = async () => {
+    try {
+      const response = await bloodApi.getDonors({ limit: 10, status: 'available' });
+      if (response.data && response.data.donors) {
+        setDonors(response.data.donors);
+      } else {
+        // Fallback data
+        setDonors([
+          {
+            id: 1,
+            name: "Sarah Wilson",
+            bloodGroup: "O-",
+            lastDonation: "2 months ago",
+            totalDonations: 12,
+            status: "available",
+            badges: ["Super Donor", "Life Saver"]
+          },
+          {
+            id: 2,
+            name: "David Chen",
+            bloodGroup: "A+",
+            lastDonation: "1 month ago",
+            totalDonations: 8,
+            status: "available",
+            badges: ["Regular Donor"]
+          },
+          {
+            id: 3,
+            name: "Emily Brown",
+            bloodGroup: "B-",
+            lastDonation: "3 weeks ago",
+            totalDonations: 15,
+            status: "not_available",
+            badges: ["Champion Donor", "Life Saver"]
+          }
+        ]);
+      }
+    } catch (error) {
+      console.error('Failed to load donors:', error);
+    }
+  };
+
+  const loadBloodRequests = async () => {
+    try {
+      const response = await bloodApi.getBloodRequests({ limit: 10, status: 'active' });
+      if (response.data && response.data.requests) {
+        setDonationRequests(response.data.requests);
+      } else {
+        // Fallback data
+        setDonationRequests([
+          {
+            id: 1,
+            patientName: "John Doe",
+            bloodGroup: "O-",
+            unitsNeeded: 2,
+            urgency: "critical",
+            hospital: "City General Hospital",
+            contact: "+1234567890",
+            timePosted: "2 hours ago",
+            location: "Campus Area"
+          },
+          {
+            id: 2,
+            patientName: "Jane Smith",
+            bloodGroup: "A+",
+            unitsNeeded: 1,
+            urgency: "urgent",
+            hospital: "University Medical Center",
+            contact: "+1234567891",
+            timePosted: "4 hours ago",
+            location: "Near Library"
+          },
+          {
+            id: 3,
+            patientName: "Mike Johnson",
+            bloodGroup: "B+",
+            unitsNeeded: 3,
+            urgency: "normal",
+            hospital: "Community Health Center",
+            contact: "+1234567892",
+            timePosted: "1 day ago",
+            location: "Downtown"
+          }
+        ]);
+      }
+    } catch (error) {
+      console.error('Failed to load blood requests:', error);
+    }
+  };
 
   const handleInputChange = (e) => {
     setFormData({
@@ -88,11 +144,54 @@ const BloodDonation = () => {
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Form submitted:", formData);
-    // Handle form submission
-    alert("Thank you for registering! We'll contact you soon.");
+    setLoading(true);
+
+    try {
+      const response = await bloodApi.registerDonor(formData);
+      showNotification(response.message || "Thank you for registering! We'll contact you soon.");
+      
+      // Reset form
+      setFormData({
+        name: "",
+        email: "",
+        phone: "",
+        bloodGroup: "",
+        lastDonation: "",
+        medicalConditions: "",
+        location: ""
+      });
+
+      // Reload data
+      loadStats();
+      loadDonors();
+    } catch (error) {
+      showNotification(handleApiError(error), 'error');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleDonationResponse = async (requestId) => {
+    try {
+      // This would typically open a modal or form for donor details
+      const donorName = prompt("Enter your full name:");
+      const donorPhone = prompt("Enter your phone number:");
+      
+      if (donorName && donorPhone) {
+        const response = await bloodApi.respondToRequest(requestId, {
+          donorId: 'temp-id', // Would be from logged-in user
+          donorName,
+          donorPhone
+        });
+        
+        showNotification(response.message || "Your response has been submitted successfully!");
+        loadBloodRequests(); // Reload requests
+      }
+    } catch (error) {
+      showNotification(handleApiError(error), 'error');
+    }
   };
 
   const getUrgencyColor = (urgency) => {
@@ -119,22 +218,22 @@ const BloodDonation = () => {
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
         <div className="stat bg-red-50 rounded-lg">
           <div className="stat-title text-red-600">Active Donors</div>
-          <div className="stat-value text-red-700">156</div>
+          <div className="stat-value text-red-700">{stats.totalDonors}</div>
           <div className="stat-desc text-red-500">This semester</div>
         </div>
         <div className="stat bg-green-50 rounded-lg">
           <div className="stat-title text-green-600">Lives Saved</div>
-          <div className="stat-value text-green-700">89</div>
+          <div className="stat-value text-green-700">{stats.availableDonors}</div>
           <div className="stat-desc text-green-500">Through donations</div>
         </div>
         <div className="stat bg-blue-50 rounded-lg">
           <div className="stat-title text-blue-600">Blood Banks</div>
-          <div className="stat-value text-blue-700">12</div>
+          <div className="stat-value text-blue-700">{stats.activeRequests}</div>
           <div className="stat-desc text-blue-500">Partner hospitals</div>
         </div>
         <div className="stat bg-yellow-50 rounded-lg">
           <div className="stat-title text-yellow-600">Urgent Requests</div>
-          <div className="stat-value text-yellow-700">3</div>
+          <div className="stat-value text-yellow-700">{stats.urgentRequests}</div>
           <div className="stat-desc text-yellow-500">Need immediate help</div>
         </div>
       </div>
@@ -234,17 +333,32 @@ const BloodDonation = () => {
                   </div>
                 </div>
 
-                <div className="form-control">
-                  <label className="label">
-                    <span className="label-text">Last Blood Donation (if any)</span>
-                  </label>
-                  <input
-                    type="date"
-                    name="lastDonation"
-                    value={formData.lastDonation}
-                    onChange={handleInputChange}
-                    className="input input-bordered"
-                  />
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="form-control">
+                    <label className="label">
+                      <span className="label-text">Last Blood Donation (if any)</span>
+                    </label>
+                    <input
+                      type="date"
+                      name="lastDonation"
+                      value={formData.lastDonation}
+                      onChange={handleInputChange}
+                      className="input input-bordered"
+                    />
+                  </div>
+                  <div className="form-control">
+                    <label className="label">
+                      <span className="label-text">Location</span>
+                    </label>
+                    <input
+                      type="text"
+                      name="location"
+                      value={formData.location}
+                      onChange={handleInputChange}
+                      className="input input-bordered"
+                      placeholder="Your area/campus"
+                    />
+                  </div>
                 </div>
 
                 <div className="form-control">
@@ -261,8 +375,12 @@ const BloodDonation = () => {
                   ></textarea>
                 </div>
 
-                <button type="submit" className="btn btn-error w-full">
-                  Register as Donor
+                <button 
+                  type="submit" 
+                  className={`btn btn-error w-full ${loading ? 'loading' : ''}`}
+                  disabled={loading}
+                >
+                  {loading ? 'Registering...' : 'Register as Donor'}
                 </button>
               </form>
             </div>
@@ -379,7 +497,12 @@ const BloodDonation = () => {
                   </div>
                   <div className="card-actions justify-end mt-4">
                     <button className="btn btn-outline btn-sm">Share</button>
-                    <button className="btn btn-error btn-sm">I Can Donate</button>
+                    <button 
+                      className="btn btn-error btn-sm"
+                      onClick={() => handleDonationResponse(request.id)}
+                    >
+                      I Can Donate
+                    </button>
                   </div>
                 </div>
               </div>
@@ -428,7 +551,7 @@ const BloodDonation = () => {
                   </div>
 
                   <div className="flex flex-wrap gap-1 mt-3">
-                    {donor.badges.map((badge, index) => (
+                    {donor.badges && donor.badges.map((badge, index) => (
                       <span key={index} className="badge badge-outline badge-sm">
                         {badge}
                       </span>

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 
 const Bulletin = () => {
   const [activeTab, setActiveTab] = useState("all");
