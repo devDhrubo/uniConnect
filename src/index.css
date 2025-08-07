@@ -1,8 +1,118 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
 
 @import "tailwindcss";
-
+@plugin "daisyui";
 
 .font-inter {
   font-family: 'Inter', sans-serif;
+}
+
+/* Color Variables */
+/* Indigo Blue	Trust, professionalism (main accent)	#3F51B5
+Crimson Red	Urgency, blood donation highlights	#D32F2F
+Emerald Green	Hope, health, donation success	#388E3C
+Amber Yellow	Festive, attention-grabbing (events, notices)	#FFC107
+Cool Gray	Neutral backgrounds, cards, modals	#F5F5F5 / #9E9E9E */
+
+.main-col{
+  color: #3F51B5;
+}
+.blood-highlight {
+  color: #D32F2F;
+}
+.donation-highlight{
+  color: #388E3C;
+}
+.attention-grabbing {
+  color: #FFC107;
+}
+
+/* Custom Utilities */
+.line-clamp-2 {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.line-clamp-3 {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* Smooth scrolling */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Card hover effects */
+.card:hover {
+  transform: translateY(-2px);
+  transition: transform 0.3s ease;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #c1c1c1;
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #a8a8a8;
+}
+
+/* Loading animation */
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: .5;
+  }
+}
+
+.animate-pulse {
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+/* Focus styles for accessibility */
+.btn:focus-visible,
+.input:focus-visible,
+.textarea:focus-visible,
+.select:focus-visible {
+  outline: 2px solid #3F51B5;
+  outline-offset: 2px;
+}
+
+/* Responsive text sizing */
+@media (max-width: 768px) {
+  .text-4xl {
+    font-size: 2rem;
+  }
+  .text-3xl {
+    font-size: 1.5rem;
+  }
+  .text-2xl {
+    font-size: 1.25rem;
+  }
+}
+
+/* Print styles */
+@media print {
+  .no-print {
+    display: none !important;
+  }
 }
