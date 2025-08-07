@@ -14,36 +14,41 @@ const Navbar = () => {
         <div className="hidden lg:flex">
           <ul className="menu menu-horizontal px-1 gap-2">
             <li>
+              <Link to="/" className="hover:bg-yellow-50">
+                Home
+              </Link>
+            </li>
+            <li>
+              <Link to="/about" className="hover:bg-yellow-50">
+                About
+              </Link>
+            </li>
+            <li>
               <Link
                 to="/blood-donation"
                 className="text-red-600 hover:bg-red-50"
               >
-                🩸 Blood Bank
+                Blood Bank
               </Link>
             </li>
             <li>
               <Link to="/lost-found" className="hover:bg-blue-50">
-                🔍 Lost & Found
+                Lost & Found
               </Link>
             </li>
             <li>
               <Link to="/events" className="hover:bg-yellow-50">
-                🎉 Events
+                Events
               </Link>
             </li>
             <li>
               <Link to="/auction" className="hover:bg-purple-50">
-                🛒 Marketplace
+                Marketplace
               </Link>
             </li>
             <li>
               <Link to="/bulletin" className="hover:bg-orange-50">
-                📢 Bulletin
-              </Link>
-            </li>
-            <li>
-              <Link to="/about" className="hover:bg-gray-50">
-                ℹ️ About
+                Bulletin
               </Link>
             </li>
           </ul>
