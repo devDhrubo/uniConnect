@@ -1,6 +1,9 @@
 import { useState } from "react";
+import { useAuth } from "../hooks/useAuth";
+import { Link } from "react-router-dom";
 
 const Bulletin = () => {
+  const { user, isAuthenticated } = useAuth();
   const [activeTab, setActiveTab] = useState("all");
   const [selectedCategory, setSelectedCategory] = useState("all");
 
@@ -223,9 +226,25 @@ const Bulletin = () => {
     <div className="container mx-auto px-4 py-8 font-inter">
       {/* Header */}
       <div className="text-center mb-8">
-        <h1 className="text-4xl font-bold mb-4">
-          <span className="attention-grabbing">📢 University Bulletin Board</span>
-        </h1>
+        <div className="flex justify-between items-center mb-4">
+          <div className="flex-1"></div>
+          <h1 className="text-4xl font-bold flex-1">
+            <span className="attention-grabbing">📢 University Bulletin Board</span>
+          </h1>
+          <div className="flex-1 flex justify-end">
+            {isAuthenticated && user?.role === 'bulletin_admin' && (
+              <Link 
+                to="/bulletin-dashboard" 
+                className="btn btn-primary btn-sm shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300"
+              >
+                <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"></path>
+                </svg>
+                Admin Dashboard
+              </Link>
+            )}
+          </div>
+        </div>
         <p className="text-lg text-gray-600">
           Stay updated with official announcements, notices, and important information
         </p>

@@ -4,11 +4,15 @@ import About from "../Pages/About";
 import Auction from "../Pages/Auction";
 import BloodDonation from "../Pages/BloodDonation";
 import Bulletin from "../Pages/Bulletin";
+import BulletinDashboard from "../Pages/BulletinDashboard";
 import Events from "../Pages/Events";
 import FloodRelief from "../Pages/FloodRelief";
 import Home from "../Pages/Home";
 import LostFound from "../Pages/LostFound";
 import MedicalAid from "../Pages/MedicalAid";
+import Auth from "../Pages/Auth";
+import ProtectedRoute from "../components/ProtectedRoute";
+import BulletinAdminGuard from "../components/BulletinAdminGuard";
 
 export const router = createBrowserRouter([
   {
@@ -25,36 +29,46 @@ export const router = createBrowserRouter([
             element: <Home/>
         },
         {
-            path: "/blood-donation",
-            element: <BloodDonation/>
-        },
-        {
-            path: "/lost-found",
-            element: <LostFound/>
-        },
-        {
-            path: "/flood-relief",
-            element: <FloodRelief/>
-        },
-        {
-            path: "/medical-aid",
-            element: <MedicalAid/>
-        },
-        {
-            path: "/events",
-            element: <Events/>
-        },
-        {
-            path: "/auction",
-            element: <Auction/>
-        },
-        {
-            path: "/bulletin",
-            element: <Bulletin/>
+            path: "/auth",
+            element: <Auth/>
         },
         {
             path: "/about",
             element: <About/>
+        },
+        // Special bulletin dashboard route (admin only)
+        {
+            path: "/bulletin-dashboard",
+            element: <BulletinAdminGuard><BulletinDashboard/></BulletinAdminGuard>
+        },
+        // Protected routes - require authentication
+        {
+            path: "/blood-donation",
+            element: <ProtectedRoute><BloodDonation/></ProtectedRoute>
+        },
+        {
+            path: "/lost-found",
+            element: <ProtectedRoute><LostFound/></ProtectedRoute>
+        },
+        {
+            path: "/flood-relief",
+            element: <ProtectedRoute><FloodRelief/></ProtectedRoute>
+        },
+        {
+            path: "/medical-aid",
+            element: <ProtectedRoute><MedicalAid/></ProtectedRoute>
+        },
+        {
+            path: "/events",
+            element: <ProtectedRoute><Events/></ProtectedRoute>
+        },
+        {
+            path: "/auction",
+            element: <ProtectedRoute><Auction/></ProtectedRoute>
+        },
+        {
+            path: "/bulletin",
+            element: <ProtectedRoute><Bulletin/></ProtectedRoute>
         }
     ]
   },
